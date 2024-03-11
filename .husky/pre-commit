@@ -19,5 +19,21 @@
 ## or put your custom commands -------------------
 #echo 'Husky.Net is awesome!'
 
-dotnet husky run echo 'Husky.Net is awesome!'
-echo 'pre-commit hook!'
+# dotnet husky run echo 'Husky.Net is awesome!'
+# echo 'pre-commit hook!'
+
+echo 'Ready to commit changes!'
+
+echo 'Format'
+
+dotnet husky run --name dotnet-format-staged-files
+
+echo 'Build'
+
+dotnet build --no-restore
+
+echo 'Test'
+
+dotnet test --no-restore
+
+echo 'Completed pre-commit changes'
