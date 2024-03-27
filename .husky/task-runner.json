@@ -1,6 +1,6 @@
 {
    "tasks": [
-      {
+            {
          "name": "welcome-message-example",
          "command": "bash",
          "args": [ "-c", "echo Husky.Net is awesome!" ],
@@ -15,6 +15,11 @@
   "command": "dotnet",
   "args": ["format", "--include", "${staged}"],
   "include": ["**/*.cs"]
-}
+},
+{
+         "name": "commit-message-linter",
+         "command": "dotnet",
+         "args": ["husky", "exec", ".husky/csx/commit-lint.csx", "--args", "${args}"]
+      }
    ]
 }
