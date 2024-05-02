@@ -1,13 +1,15 @@
 ﻿using IndustryX.ServiceUser.Models;
+using MongoDB.Bson;
 
 namespace IndustryX.ServiceUser.Services.Interfaces
 {
     public interface IUserService : IService
     {
         User GetUserByUserName(string username);
-        User GetUserById(int id);
+        User GetUserById(ObjectId id);
         void CreateUser(User user);
         void UpdateUser(User user);
-        void DeleteUser(int id);
+        void DeleteUser(ObjectId id);
+        UserConfirmation GetStatusByUserName(string username);
     }
 }

@@ -3,6 +3,7 @@ using IndustryX.ServiceUser.Models;
 using IndustryX.ServiceUser.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 
 namespace IndustryX.ServiceUser.Controllers
 {
@@ -20,7 +21,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
         [HttpGet]
         [Route("GetUserById")]
-        public Task<User> GetUserById(int id) => Task.FromResult(userService.GetUserById(id));
+        public Task<User> GetUserById(ObjectId id) => Task.FromResult(userService.GetUserById(id));
         [HttpGet]
         [Route("GetUserByName")]
         public Task<User> GetUserByName(string username) => Task.FromResult(userService.GetUserByUserName(username));
@@ -34,11 +35,15 @@ namespace IndustryX.ServiceUser.Controllers
         }
         [HttpPost]
         [Route("DeleteUser")]
-        public ObjectResult DeleteUser(int id)
+        public ObjectResult DeleteUser(ObjectId id)
         {
             try { userService.DeleteUser(id); }
             catch (Exception ex) { return BadRequest(ex.Message); }
             return Ok(true);
         }
+        [HttpGet]
+        [Route("GetStatusByUserName")]
+        public Task<UserConfirmation> GetStatusByUserName(string username) => Task.FromResult(userService.GetStatusByUserName(username));
+        
     }
 }
