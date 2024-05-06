@@ -5,11 +5,12 @@ namespace IndustryX.ServiceUser.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        User GetById(ObjectId id);
+        User GetById(int id);
         User GetByUserName(string userName);
+        User GetStatusByUserName(string userName);
         void Add(User user);
         void Update(User user);
-        void Delete(ObjectId id);
-        UserConfirmation GetStatusByUserName(string userName);
+        void Delete(int id);
+       
     }
 }

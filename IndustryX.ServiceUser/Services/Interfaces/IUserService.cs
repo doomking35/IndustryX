@@ -6,10 +6,10 @@ namespace IndustryX.ServiceUser.Services.Interfaces
     public interface IUserService : IService
     {
         User GetUserByUserName(string username);
-        User GetUserById(ObjectId id);
+        User GetUserById(int id);
+        User GetStatusByUserName(string username);
         void CreateUser(User user);
         void UpdateUser(User user);
-        void DeleteUser(ObjectId id);
-        UserConfirmation GetStatusByUserName(string username);
+        void DeleteUser(int id);
     }
 }

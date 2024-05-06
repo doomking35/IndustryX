@@ -21,7 +21,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
         [HttpGet]
         [Route("GetUserById")]
-        public Task<User> GetUserById(ObjectId id) => Task.FromResult(userService.GetUserById(id));
+        public Task<User> GetUserById(int id) => Task.FromResult(userService.GetUserById(id));
         [HttpGet]
         [Route("GetUserByName")]
         public Task<User> GetUserByName(string username) => Task.FromResult(userService.GetUserByUserName(username));
@@ -35,7 +35,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
         [HttpPost]
         [Route("DeleteUser")]
-        public ObjectResult DeleteUser(ObjectId id)
+        public ObjectResult DeleteUser(int id)
         {
             try { userService.DeleteUser(id); }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -43,7 +43,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
         [HttpGet]
         [Route("GetStatusByUserName")]
-        public Task<UserConfirmation> GetStatusByUserName(string username) => Task.FromResult(userService.GetStatusByUserName(username));
+        public Task<User> GetStatusByUserName(string username) => Task.FromResult(userService.GetStatusByUserName(username));
         
     }
 }

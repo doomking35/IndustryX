@@ -14,22 +14,22 @@ namespace IndustryX.ServiceUser.Repositories
         public static readonly IConfigurationRoot configurationRoot = configuration.Build();
         static readonly string connectionString = configurationRoot["ConnectionStrings:mongoDB"];
         private readonly IMongoCollection<User> client = new MongoClient(connectionString).GetDatabase("USERDB").GetCollection<User>("users");
-        private readonly IMongoCollection<UserConfirmation> clientConfirmation = new MongoClient(connectionString).GetDatabase("USERDB").GetCollection<UserConfirmation>("usersConfirmation");
+        //private readonly IMongoCollection<UserConfirmation> clientConfirmation = new MongoClient(connectionString).GetDatabase("USERDB").GetCollection<UserConfirmation>("usersConfirmation");
 
         //private readonly MongoDBService _mongoDBService;
         public UserRepository() { }
 
-        public User GetById(ObjectId id)
+        public User GetById(int id)
         {
+            throw new Exception("Obsolete Function; TODO: ID stores as ObjectID not an Integer value anymore");
             FilterDefinition<User> filter = Builders<User>.Filter.Eq("Id", id);
             return client.Find(filter).FirstOrDefault();
         }
         public void Add(User user)
         {
-            client.InsertOne(user);
-            clientConfirmation.InsertOne(new UserConfirmation(false,false, UserStatus.Active,user.UserGUID, user.Id));
+            client.InsertOne(user);           
         }
-        public void Delete(ObjectId id)
+        public void Delete(int id)
         {
             FilterDefinition<User> filter = Builders<User>.Filter.Eq("Id", id);
             client.DeleteOne(filter);
@@ -44,16 +44,10 @@ namespace IndustryX.ServiceUser.Repositories
             FilterDefinition<User> filter = Builders<User>.Filter.Eq("UserName", userName);
             return client.Find(filter).FirstOrDefault();
         }
-        public UserConfirmation GetStatusByUserName(string userName)
+        public User GetStatusByUserName(string userName)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("UserName", userName);
-            var user = client.Find(filter).FirstOrDefault();
-            if(user != null)
-            {
-                FilterDefinition<UserConfirmation> filterConfirmation = Builders<UserConfirmation>.Filter.Eq("UserGUID", user.UserGUID);
-                return clientConfirmation.Find(filterConfirmation).FirstOrDefault();
-            }
-            return new UserConfirmation();
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq("UserName", userName);       
+            return client.Find(filter).FirstOrDefault();
         }
     }
 
