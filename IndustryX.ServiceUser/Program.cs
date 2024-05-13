@@ -1,6 +1,7 @@
 using IndustryX.ServiceUser.DAL;
 using IndustryX.ServiceUser.Middlewares;
 using IndustryX.ServiceUser.Repositories;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB:User"));
 builder.Services.AddSingleton<MongoDBService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
