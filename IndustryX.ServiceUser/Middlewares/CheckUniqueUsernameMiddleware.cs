@@ -15,8 +15,7 @@ namespace IndustryX.ServiceUser.Middlewares
 
         public static readonly ConfigurationBuilder configuration = (ConfigurationBuilder)new ConfigurationBuilder().AddJsonFile("appsettings.json");
         public static readonly IConfigurationRoot configurationRoot = configuration.Build();
-        static readonly string connectionString = configurationRoot["ConnectionStrings:mongoDB"];
-        private readonly IMongoCollection<User> client = new MongoClient(connectionString).GetDatabase("USERDB").GetCollection<User>("users");
+        private readonly IMongoCollection<User> client = new MongoClient(configurationRoot.GetSection("MongoDB:User:ConnectionURI").Value).GetDatabase(configurationRoot.GetSection("MongoDB:User:DatabaseName").Value).GetCollection<User>(configurationRoot.GetSection("MongoDB:User:CollectionName").Value);
 
         public CheckUniqueUsernameMiddleware(RequestDelegate next)
         {
