@@ -1,58 +1,50 @@
 ﻿using Amazon.Util.Internal.PlatformServices;
+using IndustryX.InfrastructureModels;
 using IndustryX.ServiceUser.DAL;
 using IndustryX.ServiceUser.Models;
 using IndustryX.ServiceUser.Models.Enums;
 using IndustryX.ServiceUser.Repositories.Interfaces;
+using MassTransit;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace IndustryX.ServiceUser.Repositories
 {
-    public class UserRepository : MongoDBService, IUserRepository
+    public class UserRepository : IUserRepository
     {
-        //public static readonly ConfigurationBuilder configuration = (ConfigurationBuilder)new ConfigurationBuilder().AddJsonFile("appsettings.json");
-        //public static readonly IConfigurationRoot configurationRoot = configuration.Build();
-        //static readonly string connectionString = configurationRoot["ConnectionStrings:mongoDB"];
-        //private readonly IMongoCollection<User> client = new MongoClient(connectionString).GetDatabase("USERDB").GetCollection<User>("users");
+        private readonly IMongoCollection<User> _users;
 
-        private readonly MongoDBService _service;
-        public UserRepository(MongoDBService mongoDBService) : base(AccessedCollection.User) {
-            _service = mongoDBService;
-        }
-        public UserRepository() : base(AccessedCollection.User) {
-            _service = new MongoDBService(null);
+        public UserRepository(IMongoClient client, IOptions<MongoDBSettings> mongoDBSettings)
+        {
+            var settings = mongoDBSettings.Value;
+            var database = client.GetDatabase(settings.DatabaseName);
+            _users = database.GetCollection<User>(settings.CollectionName);
         }
 
-        public User GetById(int id)
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            throw new Exception("Obsolete Function; TODO: ID stores as ObjectID not an Integer value anymore");
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("Id", id);
-            return _service._userCollection.Find(filter).FirstOrDefault();
+            return await _users.Find(user => true).ToListAsync();
         }
-        public void Add(User user)
+
+        public async Task<User> GetUserByIdAsync(string id)
         {
-            _service._userCollection.InsertOne(user);           
+            return await _users.Find<User>(user => user.Id == id).FirstOrDefaultAsync();
         }
-        public void Delete(int id)
+
+        public async Task CreateUserAsync(User user)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("Id", id);
-            _service._userCollection.DeleteOne(filter);
+            await _users.InsertOneAsync(user);
         }
-        public void Update(User user)
+
+        public async Task UpdateUserAsync(string id, User user)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("Id", user.Id);
-            _service._userCollection.ReplaceOne(filter, user);            
+            await _users.ReplaceOneAsync(u => u.Id == id, user);
         }
-        public User GetByUserName(string userName)
+
+        public async Task DeleteUserAsync(string id)
         {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("UserName", userName);
-            return _service._userCollection.Find(filter).FirstOrDefault();
-        }
-        public User GetStatusByUserName(string userName)
-        {
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("UserName", userName);       
-            return _service._userCollection.Find(filter).FirstOrDefault();
+            await _users.DeleteOneAsync(user => user.Id == id);
         }
     }
-
 }

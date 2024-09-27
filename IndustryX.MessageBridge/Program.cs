@@ -4,6 +4,7 @@ using IndustryX.MessageBridge.MessageBridge.Core.Interfaces;
 using IndustryX.MessageBridge.MessageBridge.Core.Services;
 using IndustryX.MessageBridge.MessageBridge.Models;
 using IndustryX.MessageBridge.MessageBridge.Services;
+using MassTransit;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -16,6 +17,23 @@ builder.Host.UseSerilog((context, configuration) =>
         .Enrich.FromLogContext()
         .WriteTo.Console()
         .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day);
+});
+
+// MassTransit konfigürasyonu
+builder.Services.AddMassTransit(x =>
+{
+    // Add the EmailMessageConsumer to the configuration
+    x.AddConsumer<EmailMessageConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+        cfg.ConfigureEndpoints(context);
+    });
 });
 // Add services to the container.
 

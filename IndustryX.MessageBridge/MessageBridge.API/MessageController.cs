@@ -16,11 +16,11 @@ namespace IndustryX.MessageBridge.MessageBridge.API
             _messageService = messageService;
         }
 
-        [HttpPost("QueueMessage")]
-        public IActionResult QueueMessage([FromBody] SendMessageRequest request)
-        {
-            _messageService.QueueMessage(request.MessageType, request.To, request.Subject, request.TemplateName, request.Placeholders);
-            return Ok("Message queued successfully!");
-        }
+        //[HttpPost("QueueMessage")]
+        //public IActionResult QueueMessage([FromBody] SendMessageRequest request)
+        //{
+        //    _messageService.QueueMessage(request);
+        //    return Ok("Message queued successfully!");
+        //}
     }
 }

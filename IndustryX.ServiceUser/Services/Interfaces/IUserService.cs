@@ -3,13 +3,13 @@ using MongoDB.Bson;
 
 namespace IndustryX.ServiceUser.Services.Interfaces
 {
-    public interface IUserService : IService
+    public interface IUserService
     {
-        User GetUserByUserName(string username);
-        User GetUserById(int id);
-        User GetStatusByUserName(string username);
-        void CreateUser(User user);
-        void UpdateUser(User user);
-        void DeleteUser(int id);
+        Task<IEnumerable<User>> GetUsersAsync();
+        Task<User> GetUserByIdAsync(string id);
+        Task CreateUserAsync(User user);
+        Task UpdateUserAsync(string id, User user);
+        Task DeleteUserAsync(string id);
+        Task SendMail<T>(object mailInfo);
     }
 }

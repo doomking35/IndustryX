@@ -1,4 +1,5 @@
-﻿using IndustryX.MessageBridge.Common.Enums;
+﻿using IndustryX.InfrastructureModels.Models;
+using IndustryX.MessageBridge.Common.Enums;
 using IndustryX.MessageBridge.MessageBridge.Core.Factories;
 using IndustryX.MessageBridge.MessageBridge.Core.Interfaces;
 
@@ -17,22 +18,22 @@ namespace IndustryX.MessageBridge.MessageBridge.Core.Services
             _logger = logger;
         }
 
-        public void QueueMessage(MessageType messageType, string to, string subject, string templateName, Dictionary<string, string> placeholders)
+        public void QueueMessage(MessageBridgeSendMessageRequest request)
         {
-            _logger.LogInformation("Queuing {MessageType} message to {Recipient}", messageType, to);
+            _logger.LogInformation("Queuing {MessageType} message to {Recipient}", request.MessageType, request.To);
 
             // Queue'ya mesaj gönderimi için bir iş ekleniyor
             _taskQueue.QueueMessage(async cancellationToken =>
             {
                 try
                 {
-                    var sender = _messageSenderFactory.CreateSender(messageType);
-                    await sender.SendMessageAsync(to, subject, templateName, placeholders);
-                    _logger.LogInformation("{MessageType} message to {Recipient} sent successfully", messageType, to);
+                    var sender = _messageSenderFactory.CreateSender(request.MessageType);
+                    await sender.SendMessageAsync(request.To, request.Subject, request.TemplateName, request.Placeholders);
+                    _logger.LogInformation("{MessageType} message to {Recipient} sent successfully", request.MessageType, request.To);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error sending {MessageType} message to {Recipient}", messageType, to);
+                    _logger.LogError(ex, "Error sending {MessageType} message to {Recipient}", request.MessageType, request.To);
                 }               
             });
         }

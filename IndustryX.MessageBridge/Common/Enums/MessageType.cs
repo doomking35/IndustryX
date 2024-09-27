@@ -1,8 +1,8 @@
 ﻿namespace IndustryX.MessageBridge.Common.Enums
 {
-    public enum MessageType
-    {
-        Email,
-        SMS               
-    }
+    //public enum MessageType
+    //{
+    //    Email,
+    //    SMS               
+    //}
 }

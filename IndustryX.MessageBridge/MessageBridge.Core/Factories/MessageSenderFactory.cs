@@ -1,6 +1,7 @@
-﻿using IndustryX.MessageBridge.Common.Enums;
+﻿using IndustryX.InfrastructureModels.Enums;
+using IndustryX.InfrastructureModels.Models;
+using IndustryX.MessageBridge.Common.Enums;
 using IndustryX.MessageBridge.MessageBridge.Core.Interfaces;
-using IndustryX.MessageBridge.MessageBridge.Models;
 using IndustryX.MessageBridge.MessageBridge.Services;
 using System.Net.Mail;
 
