@@ -29,7 +29,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(string id)
+        public async Task<ActionResult<User>> GetUserById(ObjectId id)
         {
             var user = await _userService.GetUserByIdAsync(id);
 
@@ -49,7 +49,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, User user)
+        public async Task<IActionResult> UpdateUser(ObjectId id, User user)
         {
             var existingUser = await _userService.GetUserByIdAsync(id);
             if (existingUser == null)
@@ -62,7 +62,7 @@ namespace IndustryX.ServiceUser.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(ObjectId id)
         {
             var existingUser = await _userService.GetUserByIdAsync(id);
             if (existingUser == null)

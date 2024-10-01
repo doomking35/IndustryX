@@ -48,7 +48,7 @@ builder.Services.AddTransient<EmailSender>();
 
 // Factory and Service
 builder.Services.AddSingleton<MessageSenderFactory>();
-builder.Services.AddTransient<MessageService>();
+builder.Services.AddScoped<MessageService>();
 
 // Background Queue and Hosted Service
 builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();

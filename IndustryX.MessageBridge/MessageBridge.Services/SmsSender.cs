@@ -11,8 +11,7 @@ namespace IndustryX.MessageBridge.MessageBridge.Services
         //    Console.WriteLine($"Sending SMS to {to}: {message}");
         //    await Task.CompletedTask;
         //}
-
-        public Task SendMessageAsync(string to, string subject, string templateName, Dictionary<string, string> placeholders)
+        public Task SendMessageAsync(string to, string subject, string templateName, Dictionary<string, string> placeholders, Guid correlationId)
         {
             throw new NotImplementedException();
         }

@@ -28,7 +28,7 @@ namespace IndustryX.MessageBridge.MessageBridge.Core.Services
                 try
                 {
                     var sender = _messageSenderFactory.CreateSender(request.MessageType);
-                    await sender.SendMessageAsync(request.To, request.Subject, request.TemplateName, request.Placeholders);
+                    await sender.SendMessageAsync(request.To, request.Subject, request.TemplateName, request.Placeholders, request.CorrelationId);
                     _logger.LogInformation("{MessageType} message to {Recipient} sent successfully", request.MessageType, request.To);
                 }
                 catch (Exception ex)

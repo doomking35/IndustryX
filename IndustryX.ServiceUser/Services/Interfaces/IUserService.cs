@@ -6,10 +6,10 @@ namespace IndustryX.ServiceUser.Services.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<User>> GetUsersAsync();
-        Task<User> GetUserByIdAsync(string id);
+        Task<User> GetUserByIdAsync(ObjectId id);
         Task CreateUserAsync(User user);
-        Task UpdateUserAsync(string id, User user);
-        Task DeleteUserAsync(string id);
+        Task UpdateUserAsync(ObjectId id, User user);
+        Task DeleteUserAsync(ObjectId id);
         Task SendMail<T>(object mailInfo);
     }
 }

@@ -27,7 +27,7 @@ namespace IndustryX.ServiceUser.Repositories
             return await _users.Find(user => true).ToListAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(string id)
+        public async Task<User> GetUserByIdAsync(ObjectId id)
         {
             return await _users.Find<User>(user => user.Id == id).FirstOrDefaultAsync();
         }
@@ -37,12 +37,12 @@ namespace IndustryX.ServiceUser.Repositories
             await _users.InsertOneAsync(user);
         }
 
-        public async Task UpdateUserAsync(string id, User user)
+        public async Task UpdateUserAsync(ObjectId id, User user)
         {
             await _users.ReplaceOneAsync(u => u.Id == id, user);
         }
 
-        public async Task DeleteUserAsync(string id)
+        public async Task DeleteUserAsync(ObjectId id)
         {
             await _users.DeleteOneAsync(user => user.Id == id);
         }

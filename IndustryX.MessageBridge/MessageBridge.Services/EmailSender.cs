@@ -3,6 +3,8 @@ using IndustryX.MessageBridge.MessageBridge.Models;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using System.Net;
+using MassTransit;
+using IndustryX.InfrastructureModels.Models;
 
 namespace IndustryX.MessageBridge.MessageBridge.Services
 {
@@ -10,12 +12,14 @@ namespace IndustryX.MessageBridge.MessageBridge.Services
     {
         private readonly ITemplateLoader _templateLoader;
         private readonly SmtpSettings _smtpSettings;
-        public EmailSender(ISmtpConfigurationProvider smtpConfigurationProvider, ITemplateLoader templateLoader)
+        private readonly IBus _bus;
+        public EmailSender(ISmtpConfigurationProvider smtpConfigurationProvider, ITemplateLoader templateLoader, IBus bus)
         {
             _smtpSettings = smtpConfigurationProvider.GetSmtpSettings();
             _templateLoader = templateLoader;
+            _bus = bus;
         }
-        public async Task SendMessageAsync(string to, string subject, string templateName, Dictionary<string, string> placeholders)
+        public async Task SendMessageAsync(string to, string subject, string templateName, Dictionary<string, string> placeholders, Guid correlationId)
         {
             using (var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port))
             {
@@ -33,6 +37,7 @@ namespace IndustryX.MessageBridge.MessageBridge.Services
                 mailMessage.To.Add(to);
 
                 await client.SendMailAsync(mailMessage);
+                await _bus.Publish(new MessageSent { CorrelationId = correlationId});
                 await Task.CompletedTask;
             }
         }

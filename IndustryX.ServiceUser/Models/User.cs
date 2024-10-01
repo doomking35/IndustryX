@@ -12,7 +12,10 @@ namespace IndustryX.ServiceUser.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = (new ObjectId()).ToString();
+        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+
+        [BsonElement("Username")]
+        public string Username { get; set; }
 
         [BsonElement("FirstName")]
         public string FirstName { get; set; }
